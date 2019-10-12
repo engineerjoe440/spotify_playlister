@@ -2,4 +2,4 @@
 local_spotify_dev_account.py
 
 # Ignore Playlists Directory
-Playlists/*
+Playlists/*.txt
