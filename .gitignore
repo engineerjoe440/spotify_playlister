@@ -1,0 +1,5 @@
+# Ignore User Credentials File
+local_spotify_dev_account.py
+
+# Ignore Playlists Directory
+Playlists/*
