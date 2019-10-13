@@ -142,7 +142,7 @@ folder_path.set(cwd+'\\Playlists')
 lab = Label(body, textvariable=labelvar, fg='white', bg='black')
 lab.configure(font=calibri16)
 lab.pack()
-dirlab = Label(stor,text='\nPlaylist Directory:',font=calibri12,fg='white',bg='black')
+dirlab = Label(stor,text='\nPlaylist Storage Directory:',font=calibri12,fg='white',bg='black')
 dirlab.pack(side=TOP)
 direntry = Entry(stor, width=350,bg='gray20',textvariable=folder_path,bd=0,fg='white',
                  selectbackground='black',selectforeground='white',highlightcolor=
