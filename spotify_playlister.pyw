@@ -5,6 +5,7 @@ from tkinter.font import Font
 from tkinter import filedialog
 import spotipy
 import spotipy.oauth2 as oauth2
+from tabulate import tabulate
 # Import Developer ID and SECRET
 from local_spotify_dev_account import *
 
@@ -44,12 +45,13 @@ spotify = spotipy.Spotify(auth=token)
 
 # Function to Store Playlist Information in Text File
 def write_tracks(text_file, tracks):
-    text_file = folder_path.get() + '/' + text_file # Use Full File Path
-    with open(text_file, 'w') as file_out:
+    text_file = os.path.join(folder_path.get(), text_file) # Use Full File Path
+    with open(text_file, 'w', encoding="utf-8") as file_out:
         # Write Text File Name
         file_out.write(text_file + '\n\n')
         # Write Playlist Header Information
-        file_out.write("Title\t-\tArtist(s)\t-\tExplicit\n\n")
+        headers = ["Title","Artist(s)","Explicit"]
+        tracklist = []
         while True:
             for item in tracks['items']:
                 if 'track' in item:
@@ -68,10 +70,9 @@ def write_tracks(text_file, tracks):
                         track_artists += artist['name']
                         cnt += 1
                     # Validate Track Explicit Indicator
-                    track_explicit = str(track['explicit'])
-                    # Write File
-                    file_out.write(track_name + ' - ' + track_artists
-                                   + ' - ' + track_explicit + '\n')
+                    track_explicit = 'Yes' if track['explicit'] else '--'
+                    # Append Track Information to List
+                    tracklist.append([track_name, track_artists, track_explicit])
                 except KeyError:
                     print(u'Skipping track {0} by {1} (local only?)'.format(
                             track['name'], track['artists'][0]['name']))
@@ -81,6 +82,7 @@ def write_tracks(text_file, tracks):
                 tracks = spotify.next(tracks)
             else:
                 break
+        file_out.write(tabulate(tracklist, headers, tablefmt="simple"))
 
 # Main Playlist Collection Function
 def write_playlist(playlist_id):
@@ -129,9 +131,9 @@ top = Frame(root,height=20,bd=0,bg='black')
 top.pack(side=TOP)
 body = Frame(root,bg='black')
 body.pack(side=TOP)
-urlent = Frame(body,height=20,bd=0,bg='black',width=500)
+urlent = Frame(body,height=20,bd=10,bg='black',width=500)
 urlent.pack(side=BOTTOM)
-stor = Frame(body,height=20,bd=0,bg='black',width=500)
+stor = Frame(body,height=20,bd=10,bg='black',width=500)
 stor.pack(side=BOTTOM)
 # Configure Items
 calibri16 = Font(family='Calibri', size=16)
